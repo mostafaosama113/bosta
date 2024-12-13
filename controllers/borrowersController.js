@@ -19,4 +19,20 @@ const login = async (req , res , next) => {
         res.status(400).json({ message: err.message });
       }
 }
-module.exports = {register , login}
+const update = async (req, res, next) => {
+  const { borrower_id } = req.params; // Get borrower_id from route params
+  const updatedData = req.body; // Get the updated data from the request body
+  try {
+      const updatedBorrower = await BorrowerService.update(borrower_id, updatedData);
+      res.status(200).json({
+          message: 'Borrower updated successfully',
+          borrower: updatedBorrower
+      });
+  } catch (err) {
+      console.error(err);
+      res.status(400).json({
+          message: err.message
+      });
+  }
+};
+module.exports = {register , login , update}

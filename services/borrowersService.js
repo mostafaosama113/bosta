@@ -1,7 +1,7 @@
 const borrower = require('../models/borrowerModel')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
-const { use } = require("../routes/authRoutes");
+const { use } = require("../routes/borrowerRoutes");
 class BorrowerService{
     static generateToken(payload) {
         return jwt.sign(payload , process.env.SECRET_KEY , {
@@ -49,6 +49,15 @@ class BorrowerService{
             throw new Error("Invalid credentials!");
         }
     }
+    static async update(borrower_id, updatedData) {
+        try {
+            const updatedBorrower = await borrower.update(borrower_id, updatedData);
+            return updatedBorrower;  // Return the updated borrower
+        } catch (err) {
+            throw new Error('Error updating borrower: ' + err.message);
+        }
+    }
+
 }
 
 module.exports = BorrowerService

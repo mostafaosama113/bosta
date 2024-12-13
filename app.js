@@ -1,10 +1,10 @@
 require('dotenv').config({path : `${process.cwd()}/.env`})
 const express = require('express')
-const authRouter = require('./routes/authRoutes')
+const borrowerRouter = require('./routes/borrowerRoutes')
 
 const app = express()
 app.use(express.json())
-app.use('/api/auth' , authRouter)
+app.use('/api/borrower' , borrowerRouter)
 app.use('*' , (req , res , next) => {
   res.status(404).json({
     'status' : '404 Not Found',

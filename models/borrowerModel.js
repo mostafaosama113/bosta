@@ -60,6 +60,51 @@ class Borrower {
             throw new Error('Error fetching borrower by email');
         }
     }
+    static async update(borrower_id, updatedData) {
+        const fields = [];
+        const values = [];
+        let index = 1;
+
+        // Conditionally add non-null fields to the update query
+        if (updatedData.first_name) {
+            fields.push(`first_name = $${index++}`);
+            values.push(updatedData.first_name);
+        }
+        if (updatedData.email) {
+            fields.push(`email = $${index++}`);
+            values.push(updatedData.email);
+        }
+        if (updatedData.last_name) {
+            fields.push(`last_name = $${index++}`);
+            values.push(updatedData.last_name);
+        }
+        if (updatedData.password) {
+            fields.push(`password = $${index++}`);
+            values.push(updatedData.password);
+        }
+        // If no fields were provided to update, we don't proceed with the update
+        if (fields.length === 0) {
+            throw new Error('No valid fields to update');
+        }
+
+        // Add borrower_id to the values array
+        values.push(borrower_id);
+
+        const query = `
+            UPDATE borrowers
+            SET ${fields.join(', ')}
+            WHERE borrower_id = $${index}
+            RETURNING *;
+        `;
+
+        try {
+            const res = await client.query(query, values);
+            return res.rows[0];  // Return the updated borrower
+        } catch (err) {
+            console.error(err.stack);
+            throw new Error('Error updating borrower');
+        }
+    }
 }
 
 module.exports = Borrower;
