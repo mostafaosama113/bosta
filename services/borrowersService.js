@@ -67,7 +67,21 @@ class BorrowerService{
             throw new Error('Error deleting borrower');
         }
     }
-
+    static async getAll() {
+        try {
+            // Call the model's getAll method to fetch all borrowers
+            const borrowers = await borrower.getAll();
+            const borrowersWithoutPassword = borrowers.map(borrower => {
+                const { password, ...borrowerWithoutPassword } = borrower; // Destructure and remove password
+                return borrowerWithoutPassword;
+            });
+            
+            return borrowersWithoutPassword;
+        } catch (err) {
+            console.error(err);
+            throw new Error('Error fetching borrowers');
+        }
+    }
 }
 
 module.exports = BorrowerService

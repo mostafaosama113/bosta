@@ -46,4 +46,14 @@ const deleteBorrower = async (req, res, next) => {
       res.status(400).json({ message: err.message });
   }
 };
-module.exports = {register , login , update , deleteBorrower}
+const getAllBorrowers = async (req, res, next) => {
+  try {
+      // Call the service method to get all borrowers
+      const borrowers = await BorrowerService.getAll();
+      res.status(200).json(borrowers);  // Send the list of borrowers as a response
+  } catch (err) {
+      console.error(err);
+      res.status(400).json({ message: err.message });
+  }
+};
+module.exports = {register , login , update , deleteBorrower , getAllBorrowers}
