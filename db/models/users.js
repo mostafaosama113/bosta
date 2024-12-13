@@ -28,7 +28,8 @@ module.exports = sequelize.define('users' ,
       unique: true,
     },
     registeredDate: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,
