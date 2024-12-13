@@ -6,7 +6,7 @@ const register = async (req , res , next) => {
         res.status(201).send(borrowers);
       } catch (err) {
         console.error(err);
-        res.status(404).json({ message: err.message });
+        res.status(400).json({ message: err.message });
       }
 }
 const login = async (req , res , next) => {
@@ -16,7 +16,7 @@ const login = async (req , res , next) => {
         res.status(200).send(response);
       } catch (err) {
         console.error(err);
-        res.status(404).json({ message: err.message });
+        res.status(400).json({ message: err.message });
       }
 }
 module.exports = {register , login}
