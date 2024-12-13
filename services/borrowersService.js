@@ -57,6 +57,16 @@ class BorrowerService{
             throw new Error('Error updating borrower: ' + err.message);
         }
     }
+    static async delete(borrower_id) {
+        try {
+            // Call the model's delete method to soft-delete the borrower
+            const result = await borrower.delete(borrower_id);
+            return result;
+        } catch (err) {
+            console.error(err);
+            throw new Error('Error deleting borrower');
+        }
+    }
 
 }
 

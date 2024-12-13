@@ -35,4 +35,15 @@ const update = async (req, res, next) => {
       });
   }
 };
-module.exports = {register , login , update}
+const deleteBorrower = async (req, res, next) => {
+  const { borrower_id } = req.params; // Extract borrower_id from the URL parameter
+  try {
+      // Call the service method to delete the borrower
+      const result = await BorrowerService.delete(borrower_id);
+      res.status(200).json({ message: 'Borrower deleted successfully', borrower_id: result.borrower_id });
+  } catch (err) {
+      console.error(err);
+      res.status(400).json({ message: err.message });
+  }
+};
+module.exports = {register , login , update , deleteBorrower}
