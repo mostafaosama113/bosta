@@ -1,5 +1,7 @@
 const users = require("../db/models/users")
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
+const { use } = require("../routes/authRoutes");
 class BorrowerService{
     static generateToken(payload) {
         return jwt.sign(payload , process.env.SECRET_KEY , {
@@ -35,6 +37,30 @@ class BorrowerService{
             id : result.id
         })
         return result;
+    }
+
+    static async login(data){
+        const {email , password} = data;
+        if(!email || !password){
+            throw new Error("Please provide email and password");
+        }
+        const result = await users.findOne({where : {email}});
+        if(!result){
+            throw new Error("Invalid credentials!");
+        }
+        const isPasswordMatched = await bcrypt.compare(password , result.password);
+        
+        if(isPasswordMatched){
+            const token = BorrowerService.generateToken({
+                id : result.id
+            })
+            return {
+                'status' : 'success',
+                'token' : token
+            }
+        }else{
+            throw new Error("Invalid credentials!");
+        }
     }
 }
 

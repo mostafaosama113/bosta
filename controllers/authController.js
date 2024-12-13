@@ -9,5 +9,14 @@ const register = async (req , res , next) => {
         res.status(404).json({ message: err.message });
       }
 }
-
-module.exports = {register}
+const login = async (req , res , next) => {
+    const body = req.body
+    try {
+        const response = await BorrowerService.login(body);
+        res.status(200).send(response);
+      } catch (err) {
+        console.error(err);
+        res.status(404).json({ message: err.message });
+      }
+}
+module.exports = {register , login}
