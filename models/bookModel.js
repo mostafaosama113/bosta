@@ -8,7 +8,7 @@ class Book {
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
         `;
-        const values = [title, author, isbn, available_quantity, shelf_location];
+        const values = [title, author, isbn, available_quantity, shelf_location]; 
         try {
             const res = await client.query(query, values);
             return res.rows[0];  // Return the newly created book

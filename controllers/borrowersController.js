@@ -20,7 +20,7 @@ const login = async (req , res , next) => {
       }
 }
 const update = async (req, res, next) => {
-  const { borrower_id } = req.params; // Get borrower_id from route params
+  const borrower_id = req.id; // Get borrower_id from jwt
   const updatedData = req.body; // Get the updated data from the request body
   try {
       const updatedBorrower = await BorrowerService.update(borrower_id, updatedData);
@@ -36,7 +36,7 @@ const update = async (req, res, next) => {
   }
 };
 const deleteBorrower = async (req, res, next) => {
-  const { borrower_id } = req.params; // Extract borrower_id from the URL parameter
+  const borrower_id = req.id; // Extract borrower_id from jwt
   try {
       // Call the service method to delete the borrower
       const result = await BorrowerService.delete(borrower_id);

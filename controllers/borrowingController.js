@@ -1,7 +1,8 @@
 const BorrowingService = require('../services/borrowingService');
 
 const checkoutBook = async (req, res) => {
-    const { borrowerId, bookId, dueDate } = req.body;
+    const borrowerId = req.id
+    const {bookId, dueDate } = req.body;
     try {
         const result = await BorrowingService.checkoutBook(borrowerId, bookId, dueDate);
         res.status(201).json(result);
@@ -12,7 +13,8 @@ const checkoutBook = async (req, res) => {
 };
 
 const returnBook = async (req, res) => {
-    const { borrowingId, returnDate } = req.body;
+    const borrowerId = req.id
+    const {returnDate } = req.body;
     try {
         const result = await BorrowingService.returnBook(borrowingId, returnDate);
         res.status(200).json(result);
@@ -23,7 +25,7 @@ const returnBook = async (req, res) => {
 };
 
 const getCurrentBorrowedBooks = async (req, res) => {
-    const { borrowerId } = req.params;
+    const borrowerId = req.id
     try {
         const result = await BorrowingService.getCurrentBorrowedBooks(borrowerId);
         res.status(200).json(result);
@@ -34,7 +36,7 @@ const getCurrentBorrowedBooks = async (req, res) => {
 };
 
 const getOverdueBooks = async (req, res) => {
-    const { borrowerId } = req.params;
+    const borrowerId = req.id
     const { currentDate } = req.body;
     try {
         const result = await BorrowingService.getOverdueBooks(borrowerId, currentDate);
