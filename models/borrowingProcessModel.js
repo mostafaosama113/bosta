@@ -1,72 +1,118 @@
 const client = require('../clients/postgresClient');
-const Borrower = require('./borrowerModel');
-const Book = require('./bookModel');
 
 class BorrowingProcess {
-    // Borrow a book
-    static async borrow(borrower_id, book_id, due_date) {
+    // Create a borrowing record
+    static async create(borrowerId, bookId, dueDate) {
         const query = `
-            INSERT INTO borrowing_process (borrower_id, book_id, due_date)
+            INSERT INTO Borrowing_Process (borrower_id, book_id, due_date)
             VALUES ($1, $2, $3)
             RETURNING *;
         `;
-        const values = [borrower_id, book_id, due_date];
+        const values = [borrowerId, bookId, dueDate];
+
         try {
-            const res = await client.query(query, values);
-            return res.rows[0];  // Return the borrowing process record
+            const result = await client.query(query, values);
+            return result.rows[0];
         } catch (err) {
-            console.error(err.stack);
-            throw new Error('Error borrowing book');
+            console.error('Error creating borrowing record:', err);
+            throw new Error('Error creating borrowing record');
         }
     }
 
-    // Return a book
-    static async returnBook(borrowing_id, return_date) {
+    // Find a borrowing record by ID with borrower and book details
+    static async findByIdWithDetails(borrowingId) {
         const query = `
-            UPDATE borrowing_process
-            SET return_date = $1
-            WHERE borrowing_id = $2;
+            SELECT bp.*, b.title, b.author, br.first_name, br.last_name
+            FROM Borrowing_Process bp
+            JOIN Books b ON bp.book_id = b.book_id
+            JOIN Borrowers br ON bp.borrower_id = br.borrower_id
+            WHERE bp.borrowing_id = $1 AND bp.is_deleted = FALSE;
         `;
-        const values = [return_date, borrowing_id];
         try {
-            await client.query(query, values);
-            return { borrowing_id, return_date };  // Return the borrowing record with the return date
+            const result = await client.query(query, [borrowingId]);
+            return result.rows[0];
         } catch (err) {
-            console.error(err.stack);
-            throw new Error('Error returning book');
+            console.error('Error finding borrowing record with details:', err);
+            throw new Error('Error finding borrowing record with details');
         }
     }
 
-    // Get all borrowed books by a borrower
-    static async getBorrowedBooks(borrower_id) {
+    // Update a borrowing record
+    static async update(borrowingId, updatedData) {
+        const setClauses = Object.keys(updatedData)
+            .map((key, index) => `${key} = $${index + 2}`)
+            .join(', ');
+
         const query = `
-            SELECT * FROM borrowing_process
-            WHERE borrower_id = $1 AND is_deleted = FALSE;
+            UPDATE Borrowing_Process
+            SET ${setClauses}
+            WHERE borrowing_id = $1 AND is_deleted = FALSE
+            RETURNING *;
         `;
-        const values = [borrower_id];
+
+        const values = [borrowingId, ...Object.values(updatedData)];
+
         try {
-            const res = await client.query(query, values);
-            return res.rows;  // Return all borrowing records for the borrower
+            const result = await client.query(query, values);
+            return result.rows[0];
         } catch (err) {
-            console.error(err.stack);
-            throw new Error('Error fetching borrowed books');
+            console.error('Error updating borrowing record:', err);
+            throw new Error('Error updating borrowing record');
         }
     }
 
-    // Soft delete a borrowing process
-    static async delete(borrowing_id) {
+    // Find all borrowing records for a borrower (active or all) with book details
+    static async findByBorrowerIdWithDetails(borrowerId, includeReturned = true) {
         const query = `
-            UPDATE borrowing_process
-            SET is_deleted = TRUE
-            WHERE borrowing_id = $1;
+            SELECT bp.*, b.title, b.author
+            FROM Borrowing_Process bp
+            JOIN Books b ON bp.book_id = b.book_id
+            WHERE bp.borrower_id = $1 AND bp.is_deleted = FALSE
+            ${includeReturned ? '' : 'AND bp.return_date IS NULL'};
         `;
-        const values = [borrowing_id];
+
         try {
-            await client.query(query, values);
-            return { borrowing_id };  // Return the borrowing_id of the soft-deleted borrowing record
+            const result = await client.query(query, [borrowerId]);
+            return result.rows;
         } catch (err) {
-            console.error(err.stack);
-            throw new Error('Error deleting borrowing process');
+            console.error('Error finding borrowing records with details:', err);
+            throw new Error('Error finding borrowing records with details');
+        }
+    }
+
+    // Find overdue books for a borrower with book details
+    static async findOverdueByBorrowerIdWithDetails(borrowerId, currentDate) {
+        const query = `
+            SELECT bp.*, b.title, b.author
+            FROM Borrowing_Process bp
+            JOIN Books b ON bp.book_id = b.book_id
+            WHERE bp.borrower_id = $1 AND bp.due_date < $2 AND bp.return_date IS NULL AND bp.is_deleted = FALSE;
+        `;
+
+        try {
+            const result = await client.query(query, [borrowerId, currentDate]);
+            return result.rows;
+        } catch (err) {
+            console.error('Error finding overdue books with details:', err);
+            throw new Error('Error finding overdue books with details');
+        }
+    }
+    // Find the number of books left in stock
+    static async findBooksLeft(bookId) {
+        const query = `
+            SELECT b.available_quantity - COUNT(bp.book_id) AS books_left
+            FROM Books b
+            LEFT JOIN Borrowing_Process bp ON b.book_id = bp.book_id AND bp.return_date IS NULL AND bp.is_deleted = FALSE
+            WHERE b.book_id = $1
+            GROUP BY b.available_quantity;
+        `;
+
+        try {
+            const result = await client.query(query, [bookId]);
+            return result.rows[0]?.books_left || 0;
+        } catch (err) {
+            console.error('Error finding books left:', err);
+            throw new Error('Error finding books left');
         }
     }
 }
