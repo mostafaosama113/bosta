@@ -3,9 +3,10 @@ const express = require('express')
 const borrowerRouter = require('./routes/borrowerRoutes')
 const bookRouter = require('./routes/bookRouts')
 const borrowingRouter = require('./routes/borrowingRouts')
-
+const {authenticator} = require("./middlewares/authenticatorMiddleware");
 const app = express()
 app.use(express.json())
+app.use(authenticator);
 app.use('/api/borrower' , borrowerRouter)
 app.use('/api/book' , bookRouter)
 app.use('/api/borrowing' , borrowingRouter)
