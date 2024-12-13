@@ -4,7 +4,7 @@ const {
   Sequelize
 } = require('sequelize');
 const sequelize = require('../../config/database')
-module.exports = sequelize.define('Users' , 
+module.exports = sequelize.define('users' , 
   {
     id: {
       allowNull: false,
