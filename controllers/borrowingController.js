@@ -36,6 +36,7 @@ const getCurrentBorrowedBooks = async (req, res) => {
 
 const getOverdueBooks = async (req, res) => {
     const borrowerId = req.id
+    
     const { currentDate } = req.body;
     try {
         const result = await BorrowingService.getOverdueBooks(borrowerId, currentDate);
@@ -50,7 +51,7 @@ const getBooksLeft = async (req, res) => {
     const { bookId } = req.params;
     try {
         const result = await BorrowingService.getBooksLeft(bookId);
-        res.status(200).json(result);
+        res.status(200).json({'count' : result});
     } catch (err) {
         console.error('Error in getBooksLeft controller:', err);
         res.status(400).json({ message: err.message });
