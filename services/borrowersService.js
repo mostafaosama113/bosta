@@ -1,7 +1,7 @@
 const borrower = require('../models/borrowerModel')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
-const { use } = require("../routes/borrowerRoutes");
+
 class BorrowerService{
     static generateToken(payload) {
         return jwt.sign(payload , process.env.SECRET_KEY , {
