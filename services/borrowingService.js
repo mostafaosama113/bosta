@@ -3,6 +3,9 @@ const Book = require('../models/bookModel');
 
 class BorrowingService {
     static async checkoutBook(borrowerId, bookId, dueDate) {
+        if(!borrowerId || !bookId || !dueDate){
+            throw new Error('All fields are required');
+        }
         try {
             const booksLeft = await BorrowingProcess.findBooksLeft(bookId);
 
@@ -18,6 +21,9 @@ class BorrowingService {
     }
 
     static async returnBook(borrowingId, returnDate) {
+        if(!borrowerId || !returnDate){
+            throw new Error('All fields are required');
+        }
         try {
             const updatedRecord = await BorrowingProcess.update(borrowingId, { return_date: returnDate });
             return updatedRecord;
@@ -28,6 +34,9 @@ class BorrowingService {
     }
 
     static async getCurrentBorrowedBooks(borrowerId) {
+        if(!borrowerId){
+            throw new Error('All fields are required');
+        }
         try {
             const borrowedBooks = await BorrowingProcess.findByBorrowerIdWithDetails(borrowerId, false);
             return borrowedBooks;
@@ -38,6 +47,9 @@ class BorrowingService {
     }
 
     static async getOverdueBooks(borrowerId, currentDate) {
+        if(!borrowerId || !currentDate){
+            throw new Error('All fields are required');
+        }
         try {
             const overdueBooks = await BorrowingProcess.findOverdueByBorrowerIdWithDetails(borrowerId, currentDate);
             return overdueBooks;
@@ -48,6 +60,9 @@ class BorrowingService {
     }
 
     static async getBooksLeft(bookId) {
+        if(!bookId){
+            throw new Error('All fields are required');
+        }
         try {
             const booksLeft = await BorrowingProcess.findBooksLeft(bookId);
             return booksLeft;

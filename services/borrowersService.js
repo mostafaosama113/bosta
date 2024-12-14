@@ -9,6 +9,9 @@ class BorrowerService{
         })
     }
     static async register(data){
+        if(!data || !data.password || !data.first_name || !data.last_name || !data.email){
+            throw new Error('All fields are required');
+        }
         try{
             data.password = bcrypt.hashSync(data.password , 12)
             const newUser = await borrower.create(data.first_name , data.last_name , data.email , data.password)
@@ -50,6 +53,9 @@ class BorrowerService{
         }
     }
     static async update(borrower_id, updatedData) {
+        if(!borrower_id || !updatedData){
+            throw new Error('All fields are required');
+        }
         try {
             const updatedBorrower = await borrower.update(borrower_id, updatedData);
             return updatedBorrower;  
@@ -58,6 +64,9 @@ class BorrowerService{
         }
     }
     static async delete(borrower_id) {
+        if(!borrower_id){
+            throw new Error('All fields are required');
+        }
         try {
             const result = await borrower.delete(borrower_id);
             return result;
