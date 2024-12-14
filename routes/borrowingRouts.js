@@ -116,20 +116,17 @@
 /**
  * @swagger
  * /api/borrowing/overdueBooks:
- *   post:
+ *   get:
  *     summary: Get all overdue books for a borrower
  *     tags: [Borrowing]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               currentDate:
- *                 type: string
- *                 format: date
- *                 description: The current date to check overdue books.
+ *     parameters:
+ *       - in: query
+ *         name: currentDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         description: The current date to check overdue books.
  *     responses:
  *       200:
  *         description: List of overdue books.
@@ -152,6 +149,7 @@
  *       400:
  *         description: Error fetching overdue books.
  */
+
 
 /**
  * @swagger
@@ -189,7 +187,7 @@ const router = require('express').Router()
 router.route('/').post(checkoutBook)
 router.route('/return').put(returnBook)
 router.route('/books').get(getCurrentBorrowedBooks)
-router.route('/overdueBooks').post(getOverdueBooks)
+router.route('/overdueBooks').get(getOverdueBooks)
 router.route('/left/:bookId').get(getBooksLeft)
 
 module.exports = router

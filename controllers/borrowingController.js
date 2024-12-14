@@ -37,7 +37,7 @@ const getCurrentBorrowedBooks = async (req, res) => {
 const getOverdueBooks = async (req, res) => {
     const borrowerId = req.id
     
-    const { currentDate } = req.body;
+    const { currentDate } = req.query;
     try {
         const result = await BorrowingService.getOverdueBooks(borrowerId, currentDate);
         res.status(200).json(result);
