@@ -66,5 +66,6 @@ The application uses the following Docker containers:
 
 ## Additional Features
 
-- **Security**: To protect against SQL injection attacks, the application integrates PostgreSQL parameterization, ensuring that input values are treated as data and not executable commands.
+- **Security**: The application uses raw SQL queries, which are protected against SQL injection attacks by ensuring that input values are treated as data, not executable commands. This approach leverages parameterized queries to safeguard the system from malicious input.
+
 - **Soft Delete**: Instead of permanently deleting records, a soft delete is implemented by updating a column, making it possible to retain data for future use if needed.
