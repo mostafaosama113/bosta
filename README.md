@@ -30,6 +30,7 @@ The library management system includes the following primary features:
 To set up the system locally, ensure you have the following installed:
 
 - **Docker**: For containerization of the application.
+- **Git**: A version control system to clone the repository and manage the project's source code.
 
 ## Installation Guide
 
@@ -38,7 +39,7 @@ Follow the steps below to set up the project on your local machine:
 1. Ensure that **Docker** and **Docker Compose** are installed on your system.
 2. Clone the repository:
    ```bash
-   gh repo clone mostafaosama113/bosta
+   git clone https://github.com/mostafaosama113/bosta
    ```
 3. Navigate to the project directory:
    ```bash
