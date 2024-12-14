@@ -1,7 +1,6 @@
 const Book = require('../models/bookModel');
 
 class BookService {
-    // Add a new book with details
     static async addBook(title, author, isbn, available_quantity, shelf_location) {
         try {
             const newBook = await Book.create(title, author, isbn, available_quantity, shelf_location);
@@ -12,10 +11,8 @@ class BookService {
         }
     }
 
-    // Update a book's details
     static async updateBook(book_id, updatedData) {
         try {
-            // Update the book in the database
             const updatedBook = await Book.update(book_id, updatedData);
             return updatedBook;
         } catch (err) {
@@ -23,7 +20,6 @@ class BookService {
         }
     }
 
-    // Delete a book
     static async deleteBook(book_id) {
         try {
             const result = await Book.delete(book_id);
@@ -34,7 +30,6 @@ class BookService {
         }
     }
 
-    // List all books
     static async getAllBooks() {
         try {
             const books = await Book.getAll();
@@ -45,7 +40,6 @@ class BookService {
         }
     }
 
-    // Search for a book by title, author, or ISBN
     static async searchBooks(query) {
         try {
             const books = await Book.searchByTitle(query);

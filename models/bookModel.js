@@ -1,7 +1,6 @@
 const client = require('../clients/postgresClient');
 
 class Book {
-    // Create a new book
     static async create(title, author, isbn, available_quantity, shelf_location) {
         const query = `
             INSERT INTO books (title, author, isbn, available_quantity, shelf_location)
@@ -11,7 +10,7 @@ class Book {
         const values = [title, author, isbn, available_quantity, shelf_location]; 
         try {
             const res = await client.query(query, values);
-            return res.rows[0];  // Return the newly created book
+            return res.rows[0]; 
         } catch (err) {
             console.error(err.stack);
             throw new Error('Error creating book');
@@ -23,14 +22,13 @@ class Book {
         const query = 'SELECT * FROM books WHERE is_deleted = FALSE;';
         try {
             const res = await client.query(query);
-            return res.rows;  // Return all available books
+            return res.rows;
         } catch (err) {
             console.error(err.stack);
             throw new Error('Error fetching books');
         }
     }
 
-    // Soft delete a book
     static async delete(book_id) {
         const query = `
             UPDATE books
@@ -40,7 +38,7 @@ class Book {
         const values = [book_id];
         try {
             await client.query(query, values);
-            return { book_id };  // Return the book_id of the soft-deleted book
+            return { book_id };
         } catch (err) {
             console.error(err.stack);
             throw new Error('Error deleting book');
@@ -51,19 +49,18 @@ class Book {
         const values = [`%${title}%`];  // Using ILIKE for case-insensitive search
         try {
             const res = await client.query(query, values);
-            return res.rows;  // Return books matching the title
+            return res.rows; 
         } catch (err) {
             console.error(err.stack);
             throw new Error('Error searching books by title');
         }
     }
-    // Update book details by book_id, only updating nullable values
+   
     static async update(book_id, updatedData) {
         let query = 'UPDATE books SET';
         let values = [];
         let counter = 1;
 
-        // Dynamically build query based on updated fields
         for (let key in updatedData) {
             if (updatedData[key]) {
                 query += ` ${key} = $${counter},`;
@@ -72,14 +69,13 @@ class Book {
             }
         }
 
-        // Remove the trailing comma and add the WHERE condition
         query = query.slice(0, -1);
         query += ` WHERE book_id = $${counter} RETURNING *;`;
-        values.push(book_id);  // Add book_id to the values
+        values.push(book_id); 
 
         try {
             const res = await client.query(query, values);
-            return res.rows[0];  // Return the updated book
+            return res.rows[0]; 
         } catch (err) {
             console.error(err.stack);
             throw new Error('Error updating book');

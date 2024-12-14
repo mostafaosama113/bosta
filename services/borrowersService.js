@@ -52,14 +52,13 @@ class BorrowerService{
     static async update(borrower_id, updatedData) {
         try {
             const updatedBorrower = await borrower.update(borrower_id, updatedData);
-            return updatedBorrower;  // Return the updated borrower
+            return updatedBorrower;  
         } catch (err) {
             throw new Error('Error updating borrower: ' + err.message);
         }
     }
     static async delete(borrower_id) {
         try {
-            // Call the model's delete method to soft-delete the borrower
             const result = await borrower.delete(borrower_id);
             return result;
         } catch (err) {
@@ -69,7 +68,6 @@ class BorrowerService{
     }
     static async getAll() {
         try {
-            // Call the model's getAll method to fetch all borrowers
             const borrowers = await borrower.getAll();
             const borrowersWithoutPassword = borrowers.map(borrower => {
                 const { password, ...borrowerWithoutPassword } = borrower; // Destructure and remove password

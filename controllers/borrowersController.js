@@ -20,10 +20,10 @@ const login = async (req , res , next) => {
       }
 }
 const update = async (req, res, next) => {
-  const borrower_id = req.id; // Get borrower_id from jwt
-  const updatedData = req.body; // Get the updated data from the request body
+  const borrowerId = req.id; // Get borrowerId from jwt
+  const updatedData = req.body;
   try {
-      const updatedBorrower = await BorrowerService.update(borrower_id, updatedData);
+      const updatedBorrower = await BorrowerService.update(borrowerId, updatedData);
       res.status(200).json({
           message: 'Borrower updated successfully',
           borrower: updatedBorrower
@@ -36,10 +36,9 @@ const update = async (req, res, next) => {
   }
 };
 const deleteBorrower = async (req, res, next) => {
-  const borrower_id = req.id; // Extract borrower_id from jwt
+  const borrowerId = req.id; // Get borrowerId from jwt
   try {
-      // Call the service method to delete the borrower
-      const result = await BorrowerService.delete(borrower_id);
+      const result = await BorrowerService.delete(borrowerId);
       res.status(200).json({ message: 'Borrower deleted successfully', borrower_id: result.borrower_id });
   } catch (err) {
       console.error(err);
@@ -48,9 +47,8 @@ const deleteBorrower = async (req, res, next) => {
 };
 const getAllBorrowers = async (req, res, next) => {
   try {
-      // Call the service method to get all borrowers
       const borrowers = await BorrowerService.getAll();
-      res.status(200).json(borrowers);  // Send the list of borrowers as a response
+      res.status(200).json(borrowers);
   } catch (err) {
       console.error(err);
       res.status(400).json({ message: err.message });

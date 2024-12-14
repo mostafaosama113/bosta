@@ -1,6 +1,5 @@
 const BookService = require('../services/bookService');
 
-// Add a new book
 const addBook = async (req, res) => {
     const { title, author, isbn, available_quantity, shelf_location } = req.body;
     try {
@@ -12,10 +11,9 @@ const addBook = async (req, res) => {
     }
 };
 
-// Update a book's details
 const updateBook = async (req, res) => {
-    const book_id = req.params.book_id;  // Get book_id from URL parameter
-    const updatedData = req.body;  // Get updated data from request body
+    const book_id = req.params.book_id;
+    const updatedData = req.body;
     try {
         const updatedBook = await BookService.updateBook(book_id, updatedData);
         res.status(200).json(updatedBook);
@@ -25,9 +23,8 @@ const updateBook = async (req, res) => {
     }
 };
 
-// Delete a book
 const deleteBook = async (req, res) => {
-    const { book_id } = req.params;  // Get book_id from URL parameter
+    const { book_id } = req.params; 
     try {
         const deletedBook = await BookService.deleteBook(book_id);
         res.status(200).json(deletedBook);
@@ -37,7 +34,6 @@ const deleteBook = async (req, res) => {
     }
 };
 
-// List all books
 const listBooks = async (req, res) => {
     try {
         const books = await BookService.getAllBooks();
@@ -48,9 +44,8 @@ const listBooks = async (req, res) => {
     }
 };
 
-// Search for a book by title, author, or ISBN
 const searchBooks = async (req, res) => {
-    const { text } = req.query;  // Get search query from the request query string
+    const { text } = req.query; 
     try {
         const books = await BookService.searchBooks(text);
         res.status(200).json(books);

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 function authenticator(req, res, next) {
   try {
-    if (req.url.includes("/login") || req.url.includes("/register")) {
+    if (req.url.includes("/login") || req.url.includes("/register") || req.url.includes("/api/docs")) {
       next();
     } else {
       var token = req.headers.authorization.split(" ");

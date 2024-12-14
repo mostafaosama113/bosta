@@ -1,7 +1,7 @@
 const BorrowingService = require('../services/borrowingService');
 
 const checkoutBook = async (req, res) => {
-    const borrowerId = req.id
+    const borrowerId = req.id; // Get borrowerId from jwt
     const {bookId, dueDate } = req.body;
     try {
         const result = await BorrowingService.checkoutBook(borrowerId, bookId, dueDate);
@@ -13,8 +13,7 @@ const checkoutBook = async (req, res) => {
 };
 
 const returnBook = async (req, res) => {
-    const borrowerId = req.id
-    const {returnDate } = req.body;
+    const {borrowingId , returnDate } = req.body;
     try {
         const result = await BorrowingService.returnBook(borrowingId, returnDate);
         res.status(200).json(result);
@@ -25,7 +24,7 @@ const returnBook = async (req, res) => {
 };
 
 const getCurrentBorrowedBooks = async (req, res) => {
-    const borrowerId = req.id
+    const borrowerId = req.id; // Get borrowerId from jwt
     try {
         const result = await BorrowingService.getCurrentBorrowedBooks(borrowerId);
         res.status(200).json(result);

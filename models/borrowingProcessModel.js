@@ -1,7 +1,7 @@
 const client = require('../clients/postgresClient');
 
 class BorrowingProcess {
-    // Create a borrowing record
+
     static async create(borrowerId, bookId, dueDate) {
         const query = `
             INSERT INTO Borrowing_Process (borrower_id, book_id, due_date)
@@ -19,7 +19,6 @@ class BorrowingProcess {
         }
     }
 
-    // Find a borrowing record by ID with borrower and book details
     static async findByIdWithDetails(borrowingId) {
         const query = `
             SELECT bp.*, b.title, b.author, br.first_name, br.last_name
@@ -37,7 +36,6 @@ class BorrowingProcess {
         }
     }
 
-    // Update a borrowing record
     static async update(borrowingId, updatedData) {
         const setClauses = Object.keys(updatedData)
             .map((key, index) => `${key} = $${index + 2}`)
@@ -61,7 +59,6 @@ class BorrowingProcess {
         }
     }
 
-    // Find all borrowing records for a borrower (active or all) with book details
     static async findByBorrowerIdWithDetails(borrowerId, includeReturned = true) {
         const query = `
             SELECT bp.*, b.title, b.author
@@ -80,7 +77,6 @@ class BorrowingProcess {
         }
     }
 
-    // Find overdue books for a borrower with book details
     static async findOverdueByBorrowerIdWithDetails(borrowerId, currentDate) {
         const query = `
             SELECT bp.*, b.title, b.author
@@ -97,7 +93,7 @@ class BorrowingProcess {
             throw new Error('Error finding overdue books with details');
         }
     }
-    // Find the number of books left in stock
+
     static async findBooksLeft(bookId) {
         const query = `
             SELECT b.available_quantity - COUNT(bp.book_id) AS books_left
