@@ -9,11 +9,7 @@ const swaggerMiddleware = (app, port) => {
         title: "Bosta Books Express API",
         version: "1.0",
         description:
-          "This is a simple Book API application made with Express and documented with Swagger",
-        license: {
-          name: "MIT",
-          url: "https://spdx.org/licenses/MIT.html",
-        },
+          "This is a simple Book API application made with Express and documented with Swagger",  
       },
       servers: [
         {
