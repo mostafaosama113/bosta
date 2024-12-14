@@ -22,6 +22,7 @@ const login = async (req , res , next) => {
 const update = async (req, res, next) => {
   const borrowerId = req.id; // Get borrowerId from jwt
   const updatedData = req.body;
+ 
   try {
       const updatedBorrower = await BorrowerService.update(borrowerId, updatedData);
       res.status(200).json({

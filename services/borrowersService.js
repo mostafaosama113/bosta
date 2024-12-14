@@ -11,11 +11,11 @@ class BorrowerService{
     static async register(data){
         try{
             data.password = bcrypt.hashSync(data.password , 12)
-            const newUser = await borrower.create(data.firstName , data.lastName , data.email , data.password)
+            const newUser = await borrower.create(data.first_name , data.last_name , data.email , data.password)
             const result = JSON.parse(JSON.stringify(newUser))
             delete result.password;
             result.token = BorrowerService.generateToken({
-                id : result.id
+                id : result.borrower_id
             })
             return result;
         }catch(err){
@@ -31,15 +31,15 @@ class BorrowerService{
         }
         
         const result = await borrower.getByEmail(email);
+        
         if(!result){
             throw new Error("Invalid credentials!");
         }
         
         const isPasswordMatched = await bcrypt.compare(password , result.password);
-        
         if(isPasswordMatched){
             const token = BorrowerService.generateToken({
-                id : result.id
+                id : result.borrower_id
             })
             return {
                 'status' : 'success',

@@ -50,7 +50,7 @@ class Borrower {
         try {
             const res = await client.query(query, values);
             if (res.rows.length === 0) {
-                throw null;
+                return null;
             }
             return res.rows[0]; 
         } catch (err) {
