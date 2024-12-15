@@ -17,7 +17,6 @@ class Book {
         }
     }
 
-    // Get all books
     static async getAll() {
         const query = 'SELECT * FROM books WHERE is_deleted = FALSE;';
         try {
