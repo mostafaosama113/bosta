@@ -105,3 +105,138 @@ The application uses the following Docker containers:
 2. **Dockerization:** Dockerized the application using Docker Compose.
 3. **Basic Authentication:** Implemented basic authentication for the API.
 4. **Unit Tests:** Added unit tests for one module (the module for book management).
+
+
+# Library Management API
+
+This API is designed to manage the borrowing and analysis of books in a library system.
+
+## API Endpoints
+
+### **Borrowers**
+
+#### 1. **Register a new borrower**
+- **Method:** `POST`
+- **URL:** `/api/borrower/register`
+
+#### 2. **Log in an existing borrower**
+- **Method:** `POST`
+- **URL:** `/api/borrower/login`
+
+#### 3. **Update an existing borrower's information**
+- **Method:** `PUT`
+- **URL:** `/api/borrower`
+
+#### 4. **Delete a borrower**
+- **Method:** `DELETE`
+- **URL:** `/api/borrower`
+
+#### 5. **Get all borrowers**
+- **Method:** `GET`
+- **URL:** `/api/borrower`
+
+---
+
+### **Borrowing**
+
+#### 1. **Checkout a book**
+- **Method:** `POST`
+- **URL:** `/api/borrowing/`
+
+#### 2. **Return a borrowed book**
+- **Method:** `PUT`
+- **URL:** `/api/borrowing/return`
+
+#### 3. **Get all current borrowed books**
+- **Method:** `GET`
+- **URL:** `/api/borrowing/books`
+
+#### 4. **Get all overdue books for a borrower**
+- **Method:** `GET`
+- **URL:** `/api/borrowing/overdueBooks`
+- **Query parameter:** `currentDate` (required, date format)
+
+#### 5. **Get the number of available copies left for a book**
+- **Method:** `GET`
+- **URL:** `/api/borrowing/left/{bookId}`
+
+---
+
+### **Analysis**
+
+#### 1. **Export overdue borrows from the last month**
+- **Method:** `GET`
+- **URL:** `/api/borrowing/overDueLastMonth`
+
+#### 2. **Export borrowing processes from the last month**
+- **Method:** `GET`
+- **URL:** `/api/borrowing/processesLastMonth`
+
+---
+
+### Swagger Documentation
+
+- **Borrowing API Tag**: Managing the borrowing process.
+
+#### **Borrowing Endpoints**
+
+1. **Checkout a book**
+    - **Method:** `POST`
+    - **Request Body:**
+        ```json
+        {
+            "bookId": "string",
+            "dueDate": "date"
+        }
+        ```
+    - **Responses:**
+        - `201`: Successfully checked out the book.
+        - `400`: Error during book checkout.
+
+2. **Return a borrowed book**
+    - **Method:** `PUT`
+    - **Request Body:**
+        ```json
+        {
+            "borrowingId": "string",
+            "returnDate": "date"
+        }
+        ```
+    - **Responses:**
+        - `200`: Successfully returned the book.
+        - `400`: Error during book return.
+
+3. **Get all current borrowed books**
+    - **Method:** `GET`
+    - **Responses:**
+        - `200`: List of current borrowed books.
+        - `400`: Error fetching current borrowed books.
+
+4. **Get all overdue books for a borrower**
+    - **Method:** `GET`
+    - **Query Parameter:** `currentDate` (required, date format)
+    - **Responses:**
+        - `200`: List of overdue books.
+        - `400`: Error fetching overdue books.
+
+5. **Get the number of available copies left for a book**
+    - **Method:** `GET`
+    - **Parameters:**
+        - `bookId` (required)
+    - **Responses:**
+        - `200`: Number of available copies.
+        - `400`: Error fetching books left.
+
+#### **Analysis Endpoints**
+
+1. **Export overdue borrows from the last month**
+    - **Method:** `GET`
+    - **Responses:**
+        - `200`: Successfully exported overdue borrows from the last month.
+        - `400`: Error occurred while exporting overdue borrows.
+
+2. **Export borrowing processes from the last month**
+    - **Method:** `GET`
+    - **Responses:**
+        - `200`: Successfully exported borrowing processes from the last month.
+        - `400`: Error occurred while exporting borrowing processes.
