@@ -32,7 +32,6 @@ The library management system includes the following primary features:
 - **Data Storage:** The system relies on PostgreSQL to store all data, including books and borrowers, with an emphasis on efficient retrieval for search and listing operations.
 - **Rate Limiting:** To avoid overloading the system, rate limiting is applied to two key endpoints, ensuring smooth performance even under high usage.
 - **Authentication and Security:** Basic authentication is implemented to restrict unauthorized access. SQL injection protection is provided by using parameterized queries to ensure the safety of user input.
-- **Scalability Considerations:** The modular design ensures that new features, such as reservations or reviews, can be easily integrated into the system in the future.
 - **Error Handling:** The system gracefully handles errors and provides meaningful feedback to users, helping identify and resolve issues quickly.
 
 ## Requirements
