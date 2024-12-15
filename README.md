@@ -45,11 +45,7 @@ Follow the steps below to set up the project on your local machine:
    ```bash
    cd bosta
    ```
-4. Build the Docker image:
-   ```bash
-   docker build -t my-node-app .
-   ```
-5. Start the containers:
+4. Start the containers:
    ```bash
    docker-compose up -d
    ```
