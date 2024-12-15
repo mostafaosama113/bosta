@@ -71,6 +71,23 @@ class BorrowingService {
             throw err;
         }
     }
+    static async exportOverdueBorrowsLastMonth() {
+        try {
+            const overdueBorrows = await BorrowingProcess.exportOverdueBorrowsLastMonth();
+            return overdueBorrows;
+        } catch (err) {
+            throw new Error(`Failed to export overdue borrows of the last month: ${err.message}`);
+        }
+    }
+
+    static async exportBorrowingProcessesLastMonth() {
+        try {
+            const borrowingProcesses = await BorrowingProcess.exportBorrowingProcessesLastMonth();
+            return borrowingProcesses;
+        } catch (err) {
+            throw new Error(`Failed to export borrowing processes of the last month: ${err.message}`);
+        }
+    }
 }
 
 module.exports = BorrowingService;

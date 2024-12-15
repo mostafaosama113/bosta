@@ -57,11 +57,30 @@ const getBooksLeft = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const exportOverdueBorrowsLastMonth = async (req, res) => {
+    try {
+        const result = await BorrowingService.exportOverdueBorrowsLastMonth();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(400).json({ message: `Export overdue borrows failed: ${err.message}` });
+    }
+};
+
+const exportBorrowingProcessesLastMonth = async (req, res) => {
+    try {
+        const result = await BorrowingService.exportBorrowingProcessesLastMonth();
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(400).json({ message: `Export borrowing processes failed: ${err.message}` });
+    }
+};
 
 module.exports = {
     checkoutBook,
     returnBook,
     getCurrentBorrowedBooks,
     getOverdueBooks,
-    getBooksLeft
+    getBooksLeft,
+    exportOverdueBorrowsLastMonth,
+    exportBorrowingProcessesLastMonth
 };

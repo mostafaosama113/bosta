@@ -111,6 +111,45 @@ class BorrowingProcess {
             throw new Error('Error finding books left');
         }
     }
+
+    static async exportOverdueBorrowsLastMonth() {
+        const query = `
+            SELECT bp.*, b.title, b.author, br.first_name, br.last_name
+            FROM Borrowing_Process bp
+            JOIN Books b ON bp.book_id = b.book_id
+            JOIN Borrowers br ON bp.borrower_id = br.borrower_id
+            WHERE bp.due_date < CURRENT_DATE
+              AND bp.due_date >= (CURRENT_DATE - INTERVAL '1 month')
+              AND bp.return_date IS NULL
+              AND bp.is_deleted = FALSE;
+        `;
+    
+        try {
+            const result = await client.query(query);
+            return result.rows;
+        } catch (err) {
+            throw new Error('Error exporting overdue borrows of the last month');
+        }
+    }
+
+    static async exportBorrowingProcessesLastMonth() {
+        const query = `
+            SELECT bp.*, b.title, b.author, br.first_name, br.last_name
+            FROM Borrowing_Process bp
+            JOIN Books b ON bp.book_id = b.book_id
+            JOIN Borrowers br ON bp.borrower_id = br.borrower_id
+            WHERE bp.borrowed_date >= (CURRENT_DATE - INTERVAL '1 month')
+              AND bp.borrowed_date < CURRENT_DATE
+              AND bp.is_deleted = FALSE;
+        `;
+    
+        try {
+            const result = await client.query(query);
+            return result.rows;
+        } catch (err) {
+            throw new Error('Error exporting borrowing processes of the last month');
+        }
+    }
 }
 
 module.exports = BorrowingProcess;

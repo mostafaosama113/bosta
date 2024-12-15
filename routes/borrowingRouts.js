@@ -180,7 +180,75 @@
  */
 
 
-const { checkoutBook,returnBook,getCurrentBorrowedBooks,getOverdueBooks,getBooksLeft} = require('../controllers/borrowingController')
+/**
+ * @swagger
+ * tags:
+ *   - name: Analysis
+ *     description: Endpoints related to exporting overdue borrows and borrowing processes.
+ */
+/**
+ * @swagger
+ * /api/borrowing/overDueLastMonth:
+ *   get:
+ *     tags: [Analysis]
+ *     summary: Export overdue borrows from the last month.
+ *     description: This endpoint exports all overdue borrowing records from the previous month.
+ *     responses:
+ *       200:
+ *         description: Successfully exported overdue borrows from the last month.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               additionalProperties: true
+ *       400:
+ *         description: Error occurred while exporting overdue borrows.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Export overdue borrows failed: <error message>"
+ */
+
+/**
+ * @swagger
+ * /api/borrowing/processesLastMonth:
+ *   get:
+ *     tags: [Analysis]
+ *     summary: Export borrowing processes from the last month.
+ *     description: This endpoint exports all borrowing processes from the previous month.
+ *     responses:
+ *       200:
+ *         description: Successfully exported borrowing processes from the last month.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               additionalProperties: true
+ *       400:
+ *         description: Error occurred while exporting borrowing processes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Export borrowing processes failed: <error message>"
+ */
+
+const { checkoutBook,
+    returnBook,
+    getCurrentBorrowedBooks,
+    getOverdueBooks,
+    getBooksLeft,
+    exportOverdueBorrowsLastMonth,
+    exportBorrowingProcessesLastMonth
+
+} = require('../controllers/borrowingController')
 
 const router = require('express').Router()
 
@@ -189,5 +257,7 @@ router.route('/return').put(returnBook)
 router.route('/books').get(getCurrentBorrowedBooks)
 router.route('/overdueBooks').get(getOverdueBooks)
 router.route('/left/:bookId').get(getBooksLeft)
+router.route('/overDueLastMonth').get(exportOverdueBorrowsLastMonth)
+router.route('/processesLastMonth').get(exportBorrowingProcessesLastMonth)
 
 module.exports = router
