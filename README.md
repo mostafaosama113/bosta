@@ -174,7 +174,7 @@ This API is designed to manage the borrowing and analysis of books in a library 
 
 ---
 
-### Swagger Documentation
+### API Documentation
 
 - **Borrowing API Tag**: Managing the borrowing process.
 
