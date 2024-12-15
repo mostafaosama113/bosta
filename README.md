@@ -13,7 +13,6 @@ Our solution is built with cutting-edge technologies to ensure reliability and p
 - **Express**: A minimalistic and fast web framework for Node.js, powering the backend.
 - **PostgreSQL**: A reliable relational database management system for storing book and borrower data.
 - **Docker**: Used for containerizing the application for a consistent and isolated development environment.
-- **Rate Limiter**: Controls the number of requests made per minute to prevent overloading the system.
 
 ## System Features
 
@@ -25,6 +24,8 @@ The library management system includes the following primary features:
 - **Register Borrowers**: Register borrowers with essential details like name, email, and registration date.
 - **Modify Borrowers**: Update borrower details or remove them from the system.
 - **Reservations**: Track which books are currently borrowed and allow borrowers to return books.
+   - **Export Borrowing Processes for Last Month**: The system can export all borrowing process data for the last month.
+   - **Export Overdue Borrows for Last Month**: The system can export all overdue borrows for the last month.
 
 ### Analysis
 
