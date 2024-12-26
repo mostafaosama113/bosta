@@ -1,9 +1,9 @@
 
-# Bosta - Library Management System
+# Library Management System
 
 ## Project Overview
 
-Bosta is a simple library management system designed to efficiently manage books and borrowers. It provides a set of features to manage books, borrowers, and reservations, while leveraging modern technologies for a robust and scalable solution.
+A simple library management system designed to efficiently manage books and borrowers. It provides a set of features to manage books, borrowers, and reservations, while leveraging modern technologies for a robust and scalable solution.
 
 ## Technology Stack
 
